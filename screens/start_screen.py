@@ -3,11 +3,10 @@
 import pygame
 import main_constants
 import main_objects
+from screens.about_us_screen import AboutUsScreen
+from screens.about_program_screen import AboutProgramScreen
 from main_objects import MainScreenType, render_multiline_text
 from math import sqrt
-
-
-pygame.init()
 
 
 class StartScreen(MainScreenType):
@@ -15,7 +14,7 @@ class StartScreen(MainScreenType):
         super().__init__(*args, **kwargs)
         self.init_introduction_design()
         self.init_design()
-        self.create_back_button()
+        self.create_exit_button()
 
     def init_design(self):
         # Filling text
@@ -66,19 +65,15 @@ class StartScreen(MainScreenType):
         # Drawing all sprites
         self.all_sprites.draw(self)
 
-    def render_play_button(self, is_active: bool = True):
-        if is_active:
-            circle_color = pygame.Color('white')
-            triangle_color = pygame.Color('black')
-        else:
-            circle_color = pygame.Color(200, 200, 200)
-            triangle_color = pygame.Color('black')
-        button = pygame.Surface((348, 348), pygame.SRCALPHA)
-        pygame.draw.circle(button, circle_color, (174, 174),
-                           174)
-        pygame.draw.polygon(button, triangle_color,
-                            [(115, 73), (115, 275), (290, 174)])
-        self.blit(button, (426, 342))
+    def try_to_change_screen(self, event: pygame.event.Event = None):
+        super().try_to_change_screen(event)
+        mouse_pos = pygame.mouse.get_pos()
+        if event is not None:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.about_us_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = AboutUsScreen(main_constants.SCREEN_SIZE)
+                elif self.about_program_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = AboutProgramScreen(main_constants.SCREEN_SIZE)
 
 
 class PlayButtonSprite(pygame.sprite.Sprite):
@@ -130,3 +125,7 @@ class PlayButtonSprite(pygame.sprite.Sprite):
         else:
             self.draw_button()
         self.rect.x, self.rect.y = last_x, last_y
+
+
+if __name__ == '__main__':
+    pygame.init()
