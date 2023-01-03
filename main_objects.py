@@ -56,6 +56,7 @@ class MainScreenType(pygame.Surface):
         self.all_sprites = pygame.sprite.Group()
         self.back_button_sprite = None
         self.exit_button_sprite = None
+        self.new_screen = None
 
     def init_introduction_design(self):
         color = pygame.Color('#E1CC4F')
@@ -110,6 +111,17 @@ class MainScreenType(pygame.Surface):
         self.exit_button_sprite.rect.x = 25
         self.exit_button_sprite.rect.y = 25
         self.all_sprites.draw(self)
+
+    def try_to_change_screen(self, event: pygame.event.Event = None):
+        mouse_pos = pygame.mouse.get_pos()
+        if self.exit_button_sprite is not None:
+            if self.exit_button_sprite.rect.collidepoint(mouse_pos):
+                if event is not None:
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        terminate()
+
+    def get_new_screen(self):
+        return self.new_screen
 
     def create_back_button(self):
         self.create_back_button_sprite()
