@@ -77,7 +77,6 @@ class StartScreen(MainScreenType):
                     self.new_screen = about_program_screen.AboutProgramScreen(main_constants.SCREEN_SIZE)
                 elif self.play_button_sprite.is_active():
                     self.new_screen = levels_screen.LevelSelectionScreen(main_constants.SCREEN_SIZE)
-                    self.new_screen.set_background(self)
 
 
 class PlayButtonSprite(pygame.sprite.Sprite):
