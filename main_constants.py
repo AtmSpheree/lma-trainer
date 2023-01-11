@@ -47,7 +47,12 @@ TEXT_ABOUT_US_SCREEN = {'main_text': {'strings': ['История нашей к�
                                       'color': pygame.Color('black')}}
 TEXT_LEVEL_SELECTION_SCREEN = {'main_text': {'strings': ['Выберите уровень сложности:'],
                                              'size': 50,
-                                             'color': pygame.Color('white')}}
+                                             'color': pygame.Color('white')},
+                               'games_choice_text': {'strings': ['Выберите игру, или можете'
+                                                                 ' попробовать',
+                                                                 'всё сразу!'],
+                                                     'size': 50,
+                                                     'color': pygame.Color('white')}}
 
 # Main Screen Images
 IMAGE_MAIN_SCREEN = {'back_button': path.join(WORKING_DIRECTORY,

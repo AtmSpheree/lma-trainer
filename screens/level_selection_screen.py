@@ -5,7 +5,7 @@ import main_constants
 import main_objects
 from PIL import Image, ImageFilter, ImageEnhance
 from main_objects import MainScreenType, render_multiline_text
-import screens.start_screen
+import screens.start_screen as start_screen
 
 
 class LevelSelectionScreen(MainScreenType):
@@ -15,17 +15,11 @@ class LevelSelectionScreen(MainScreenType):
         self.init_design()
         self.create_back_button()
 
-    def init_design(self,
-                    background: pygame.Surface = None):
+    def init_design(self):
         # Adding a blurred darkened background
-        if background is not None:
-            string_image = pygame.image.tostring(background, "RGB", False)
-            pil_image = Image.frombytes('RGB', background.get_size(),
-                                         string_image)
-            pil_image = pil_image.filter(ImageFilter.GaussianBlur(radius=7))
-            pil_image = ImageEnhance.Brightness(pil_image).enhance(0.5)
-            image = main_objects.pil_image_to_surface(pil_image)
-            self.blit(image, (0, 0))
+        background = start_screen.StartScreen(main_constants.SCREEN_SIZE)
+        image = main_objects.get_blurred_darkened_surface(background)
+        self.blit(image, (0, 0))
         # Rendering main text
         text_data = main_constants.TEXT_LEVEL_SELECTION_SCREEN['main_text']
         text = render_multiline_text(text_data['strings'],
@@ -34,9 +28,9 @@ class LevelSelectionScreen(MainScreenType):
         self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
                          80))
         # Creating difficulty buttons
-        btn_size = (450, 78)
+        btn_size = (470, 78)
         # Creating easy difficulty button sprite
-        self.diff_easy_button_sprite = DifficultyButtonSprite(self.all_sprites)
+        self.diff_easy_button_sprite = MenuButtonSprite(self.all_sprites)
         self.diff_easy_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
                                                 pygame.Color('#68397f'))
         self.diff_easy_button_sprite.set_text('Детский', 50, pygame.Color('white'),
@@ -45,7 +39,7 @@ class LevelSelectionScreen(MainScreenType):
         self.diff_easy_button_sprite.rect.x = x
         self.diff_easy_button_sprite.rect.y = y
         # Creating medium difficulty button sprite
-        self.diff_medium_button_sprite = DifficultyButtonSprite(self.all_sprites)
+        self.diff_medium_button_sprite = MenuButtonSprite(self.all_sprites)
         self.diff_medium_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
                                                   pygame.Color('#68397f'))
         self.diff_medium_button_sprite.set_text('Подростковый', 50, pygame.Color('white'),
@@ -54,19 +48,16 @@ class LevelSelectionScreen(MainScreenType):
         self.diff_medium_button_sprite.rect.x = x
         self.diff_medium_button_sprite.rect.y = y
         # Creating hard difficulty button sprite
-        self.diff_hard_button_sprite = DifficultyButtonSprite(self.all_sprites)
+        self.diff_hard_button_sprite = MenuButtonSprite(self.all_sprites)
         self.diff_hard_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
-                                                  pygame.Color('#68397f'))
+                                                pygame.Color('#68397f'))
         self.diff_hard_button_sprite.set_text('Взрослый', 50, pygame.Color('white'),
-                                                main_constants.FONT_PATH_INTER_EXTRABOLD)
+                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
         x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 545
         self.diff_hard_button_sprite.rect.x = x
         self.diff_hard_button_sprite.rect.y = y
         # Drawing all sprites
         self.all_sprites.draw(self)
-
-    def set_background(self, background):
-        self.init_design(background)
 
     def try_to_change_screen(self, event: pygame.event.Event = None):
         super().try_to_change_screen(event)
@@ -74,10 +65,250 @@ class LevelSelectionScreen(MainScreenType):
         if event is not None:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.back_button_sprite.rect.collidepoint(mouse_pos):
-                    self.new_screen = screens.start_screen.StartScreen(main_constants.SCREEN_SIZE)
+                    self.new_screen = start_screen.StartScreen(main_constants.SCREEN_SIZE)
+                elif self.diff_easy_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = EasyLevelSelectionScreen(main_constants.SCREEN_SIZE)
+                elif self.diff_medium_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = MediumLevelSelectionScreen(main_constants.SCREEN_SIZE)
+                elif self.diff_hard_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = HardLevelSelectionScreen(main_constants.SCREEN_SIZE)
 
 
-class DifficultyButtonSprite(pygame.sprite.Sprite):
+class EasyLevelSelectionScreen(MainScreenType):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.init_introduction_design()
+        self.init_design()
+        self.create_back_button()
+
+    def init_design(self):
+        # Adding a blurred darkened background
+        background = start_screen.StartScreen(main_constants.SCREEN_SIZE)
+        image = main_objects.get_blurred_darkened_surface(background)
+        self.blit(image, (0, 0))
+        # Rendering main text
+        text_data = main_constants.TEXT_LEVEL_SELECTION_SCREEN['games_choice_text']
+        text = render_multiline_text(text_data['strings'],
+                                     text_data['size'], text_data['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
+                         50))
+        # Creating game selection buttons
+        btn_size = (470, 78)
+        # Creating sounds game button sprite
+        self.sounds_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.sounds_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                  pygame.Color('#68397f'))
+        self.sounds_game_button_sprite.set_text('Звуки', 50, pygame.Color('white'),
+                                                main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 221
+        self.sounds_game_button_sprite.rect.x = x
+        self.sounds_game_button_sprite.rect.y = y
+        # Creating pictures game button sprite
+        self.pictures_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.pictures_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                    pygame.Color('#68397f'))
+        self.pictures_game_button_sprite.set_text('Картинки', 50, pygame.Color('white'),
+                                                  main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 311
+        self.pictures_game_button_sprite.rect.x = x
+        self.pictures_game_button_sprite.rect.y = y
+        # Creating cups game button sprite
+        self.cups_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.cups_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                pygame.Color('#68397f'))
+        self.cups_game_button_sprite.set_text('Стаканчики', 50, pygame.Color('white'),
+                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 401
+        self.cups_game_button_sprite.rect.x = x
+        self.cups_game_button_sprite.rect.y = y
+        # Creating order game button sprite
+        self.order_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.order_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                 pygame.Color('#68397f'))
+        self.order_game_button_sprite.set_text('Порядок', 50, pygame.Color('white'),
+                                               main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 491
+        self.order_game_button_sprite.rect.x = x
+        self.order_game_button_sprite.rect.y = y
+        # Creating all games button sprite
+        self.all_games_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.all_games_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                pygame.Color('#68397f'))
+        self.all_games_button_sprite.set_text('Всё сразу', 50, pygame.Color('white'),
+                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 651
+        self.all_games_button_sprite.rect.x = x
+        self.all_games_button_sprite.rect.y = y
+        # Drawing all sprites
+        self.all_sprites.draw(self)
+
+    def try_to_change_screen(self, event: pygame.event.Event = None):
+        super().try_to_change_screen(event)
+        mouse_pos = pygame.mouse.get_pos()
+        if event is not None:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.back_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = LevelSelectionScreen(main_constants.SCREEN_SIZE)
+
+
+class MediumLevelSelectionScreen(MainScreenType):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.init_introduction_design()
+        self.init_design()
+        self.create_back_button()
+
+    def init_design(self):
+        # Adding a blurred darkened background
+        background = start_screen.StartScreen(main_constants.SCREEN_SIZE)
+        image = main_objects.get_blurred_darkened_surface(background)
+        self.blit(image, (0, 0))
+        # Rendering main text
+        text_data = main_constants.TEXT_LEVEL_SELECTION_SCREEN['games_choice_text']
+        text = render_multiline_text(text_data['strings'],
+                                     text_data['size'], text_data['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
+                         50))
+        # Creating game selection buttons
+        btn_size = (470, 78)
+        # Creating count game button sprite
+        self.count_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.count_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                 pygame.Color('#68397f'))
+        self.count_game_button_sprite.set_text('Посчитай', 50, pygame.Color('white'),
+                                               main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 221
+        self.count_game_button_sprite.rect.x = x
+        self.count_game_button_sprite.rect.y = y
+        # Creating colors game button sprite
+        self.colors_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.colors_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                  pygame.Color('#68397f'))
+        self.colors_game_button_sprite.set_text('Картинки', 50, pygame.Color('white'),
+                                                main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 311
+        self.colors_game_button_sprite.rect.x = x
+        self.colors_game_button_sprite.rect.y = y
+        # Creating cups game button sprite
+        self.cups_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.cups_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                pygame.Color('#68397f'))
+        self.cups_game_button_sprite.set_text('Стаканчики', 50, pygame.Color('white'),
+                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 401
+        self.cups_game_button_sprite.rect.x = x
+        self.cups_game_button_sprite.rect.y = y
+        # Creating order game button sprite
+        self.order_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.order_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                 pygame.Color('#68397f'))
+        self.order_game_button_sprite.set_text('Порядок', 50, pygame.Color('white'),
+                                               main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 491
+        self.order_game_button_sprite.rect.x = x
+        self.order_game_button_sprite.rect.y = y
+        # Creating all games button sprite
+        self.all_games_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.all_games_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                pygame.Color('#68397f'))
+        self.all_games_button_sprite.set_text('Всё сразу', 50, pygame.Color('white'),
+                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 651
+        self.all_games_button_sprite.rect.x = x
+        self.all_games_button_sprite.rect.y = y
+        # Drawing all sprites
+        self.all_sprites.draw(self)
+
+    def try_to_change_screen(self, event: pygame.event.Event = None):
+        super().try_to_change_screen(event)
+        mouse_pos = pygame.mouse.get_pos()
+        if event is not None:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.back_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = LevelSelectionScreen(main_constants.SCREEN_SIZE)
+
+
+class HardLevelSelectionScreen(MainScreenType):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.init_introduction_design()
+        self.init_design()
+        self.create_back_button()
+
+    def init_design(self):
+        # Adding a blurred darkened background
+        background = start_screen.StartScreen(main_constants.SCREEN_SIZE)
+        image = main_objects.get_blurred_darkened_surface(background)
+        self.blit(image, (0, 0))
+        # Rendering main text
+        text_data = main_constants.TEXT_LEVEL_SELECTION_SCREEN['games_choice_text']
+        text = render_multiline_text(text_data['strings'],
+                                     text_data['size'], text_data['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
+                         50))
+        # Creating game selection buttons
+        btn_size = (470, 78)
+        # Creating count game button sprite
+        self.count_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.count_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                 pygame.Color('#68397f'))
+        self.count_game_button_sprite.set_text('Посчитай', 50, pygame.Color('white'),
+                                               main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 221
+        self.count_game_button_sprite.rect.x = x
+        self.count_game_button_sprite.rect.y = y
+        # Creating colors game button sprite
+        self.colors_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.colors_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                  pygame.Color('#68397f'))
+        self.colors_game_button_sprite.set_text('Цвета', 50, pygame.Color('white'),
+                                                main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 311
+        self.colors_game_button_sprite.rect.x = x
+        self.colors_game_button_sprite.rect.y = y
+        # Creating cups game button sprite
+        self.cups_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.cups_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                pygame.Color('#68397f'))
+        self.cups_game_button_sprite.set_text('Стаканчики', 50, pygame.Color('white'),
+                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 401
+        self.cups_game_button_sprite.rect.x = x
+        self.cups_game_button_sprite.rect.y = y
+        # Creating order game button sprite
+        self.order_game_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.order_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                 pygame.Color('#68397f'))
+        self.order_game_button_sprite.set_text('Порядок', 50, pygame.Color('white'),
+                                               main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 491
+        self.order_game_button_sprite.rect.x = x
+        self.order_game_button_sprite.rect.y = y
+        # Creating all games button sprite
+        self.all_games_button_sprite = MenuButtonSprite(self.all_sprites)
+        self.all_games_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
+                                                pygame.Color('#68397f'))
+        self.all_games_button_sprite.set_text('Всё сразу', 50, pygame.Color('white'),
+                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 651
+        self.all_games_button_sprite.rect.x = x
+        self.all_games_button_sprite.rect.y = y
+        # Drawing all sprites
+        self.all_sprites.draw(self)
+
+    def try_to_change_screen(self, event: pygame.event.Event = None):
+        super().try_to_change_screen(event)
+        mouse_pos = pygame.mouse.get_pos()
+        if event is not None:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.back_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = LevelSelectionScreen(main_constants.SCREEN_SIZE)
+
+
+class MenuButtonSprite(pygame.sprite.Sprite):
     def __init__(self, *group):
         super().__init__(*group)
 

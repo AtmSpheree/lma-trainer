@@ -3,6 +3,7 @@
 import pygame
 import sys
 import main_constants
+from PIL import Image, ImageFilter, ImageEnhance
 
 
 def terminate(error_message: str = None):
@@ -27,6 +28,16 @@ def load_image(fullname: str, color_key: int = None):
 def pil_image_to_surface(pil_image):
     return pygame.image.fromstring(
         pil_image.tobytes(), pil_image.size, pil_image.mode).convert()
+
+
+def get_blurred_darkened_surface(background: pygame.Surface):
+    string_image = pygame.image.tostring(background, "RGB", False)
+    pil_image = Image.frombytes('RGB', background.get_size(),
+                                string_image)
+    pil_image = pil_image.filter(ImageFilter.GaussianBlur(radius=7))
+    pil_image = ImageEnhance.Brightness(pil_image).enhance(0.5)
+    image = pil_image_to_surface(pil_image)
+    return image
 
 
 def render_multiline_text(strings: list = [], size: int = 25,
@@ -127,6 +138,9 @@ class MainScreenType(pygame.Surface):
 
     def get_new_screen(self):
         return self.new_screen
+
+    def clear_new_screen(self):
+        self.new_screen = None
 
     def create_back_button(self):
         self.create_back_button_sprite()
