@@ -24,6 +24,11 @@ def load_image(fullname: str, color_key: int = None):
     return image
 
 
+def pil_image_to_surface(pil_image):
+    return pygame.image.fromstring(
+        pil_image.tobytes(), pil_image.size, pil_image.mode).convert()
+
+
 def render_multiline_text(strings: list = [], size: int = 25,
                           color: pygame.Color = pygame.Color('black'),
                           font: str = None):
@@ -59,12 +64,12 @@ class MainScreenType(pygame.Surface):
         self.new_screen = None
 
     def init_introduction_design(self):
-        color = pygame.Color('#E1CC4F')
+        color = pygame.Color(main_constants.COLOR_INTRODUCTION_DESIGN)
         self.fill(color)
         self.work_color = color
 
     def init_game_design(self):
-        color = pygame.Color('#D0C3DE')
+        color = pygame.Color(main_constants.COLOR_GAME_DESIGN)
         self.fill(color)
         self.work_color = color
 

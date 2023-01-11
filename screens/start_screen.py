@@ -3,8 +3,9 @@
 import pygame
 import main_constants
 import main_objects
-from screens.about_us_screen import AboutUsScreen
-from screens.about_program_screen import AboutProgramScreen
+import screens.about_us_screen as about_us_screen
+import screens.about_program_screen as about_program_screen
+import screens.level_selection_screen as levels_screen
 from main_objects import MainScreenType, render_multiline_text
 from math import sqrt
 
@@ -71,9 +72,12 @@ class StartScreen(MainScreenType):
         if event is not None:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.about_us_button_sprite.rect.collidepoint(mouse_pos):
-                    self.new_screen = AboutUsScreen(main_constants.SCREEN_SIZE)
+                    self.new_screen = about_us_screen.AboutUsScreen(main_constants.SCREEN_SIZE)
                 elif self.about_program_button_sprite.rect.collidepoint(mouse_pos):
-                    self.new_screen = AboutProgramScreen(main_constants.SCREEN_SIZE)
+                    self.new_screen = about_program_screen.AboutProgramScreen(main_constants.SCREEN_SIZE)
+                elif self.play_button_sprite.is_active():
+                    self.new_screen = levels_screen.LevelSelectionScreen(main_constants.SCREEN_SIZE)
+                    self.new_screen.set_background(self)
 
 
 class PlayButtonSprite(pygame.sprite.Sprite):
@@ -90,6 +94,7 @@ class PlayButtonSprite(pygame.sprite.Sprite):
         self.button_color = button_color
         self.size = size
         self.pos_for_check = pos_for_check
+        self.is_button_active = False
         self.draw_button()
 
     def draw_button(self, is_active=False):
@@ -122,9 +127,14 @@ class PlayButtonSprite(pygame.sprite.Sprite):
             flag_check = sqrt(x ** 2 + y ** 2) <= radius
         if self.rect.collidepoint(pygame.mouse.get_pos()) and flag_check:
             self.draw_button(is_active=True)
+            self.is_button_active = True
         else:
             self.draw_button()
+            self.is_button_active = False
         self.rect.x, self.rect.y = last_x, last_y
+
+    def is_active(self):
+        return self.is_button_active
 
 
 if __name__ == '__main__':
