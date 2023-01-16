@@ -15,7 +15,8 @@ class AboutProgramScreen(MainScreenType):
         self.create_back_button()
 
     def init_design(self):
-        pass
+        # Creating backup
+        self.backup = self.copy()
 
     def try_to_change_screen(self, event: pygame.event.Event = None):
         super().try_to_change_screen(event)

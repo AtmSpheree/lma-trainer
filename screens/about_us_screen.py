@@ -40,6 +40,8 @@ class AboutUsScreen(MainScreenType):
                                      main_constants.FONT_PATH_INTER_LIGHT)
         coords = ((main_constants.SCREEN_WIDTH - text.get_width()) // 2, 25)
         self.blit(text, coords)
+        # Creating backup
+        self.backup = self.copy()
 
     def try_to_change_screen(self, event: pygame.event.Event = None):
         super().try_to_change_screen(event)

@@ -31,6 +31,8 @@ class StartScreen(MainScreenType):
         self.blit(image, (917, 224))
         image = main_objects.load_image(main_constants.IMAGE_BEE_3)
         self.blit(image, (483, -24))
+        # Creating backup
+        self.backup = self.copy()
         # Creating buttons
         # Creating about_us_button
         text_data = main_constants.TEXT_START_SCREEN['button_about_us']

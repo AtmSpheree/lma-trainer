@@ -3,7 +3,10 @@
 import pygame
 import sys
 import main_constants
-from PIL import Image, ImageFilter, ImageEnhance
+from PIL import Image, ImageFilter, ImageEnhance, ImageColor
+
+# Initializing pygame
+pygame.init()
 
 
 def terminate(error_message: str = None):
@@ -25,15 +28,20 @@ def load_image(fullname: str, color_key: int = None):
     return image
 
 
-def pil_image_to_surface(pil_image):
+def pil_image_to_surface(pil_image: Image):
     return pygame.image.fromstring(
         pil_image.tobytes(), pil_image.size, pil_image.mode).convert()
 
 
-def get_blurred_darkened_surface(background: pygame.Surface):
-    string_image = pygame.image.tostring(background, "RGB", False)
-    pil_image = Image.frombytes('RGB', background.get_size(),
+def pygame_surface_to_image(pygame_surface: pygame.Surface):
+    string_image = pygame.image.tostring(pygame_surface, "RGB", False)
+    pil_image = Image.frombytes('RGB', pygame_surface.get_size(),
                                 string_image)
+    return pil_image
+
+
+def get_blurred_darkened_surface(background: pygame.Surface):
+    pil_image = pygame_surface_to_image(background)
     pil_image = pil_image.filter(ImageFilter.GaussianBlur(radius=7))
     pil_image = ImageEnhance.Brightness(pil_image).enhance(0.5)
     image = pil_image_to_surface(pil_image)
@@ -66,6 +74,21 @@ def render_multiline_text(strings: list = [], size: int = 25,
     return result
 
 
+def create_text_shadow(strings: list = [], size: int = 25,
+                       color: pygame.Color = pygame.Color(main_constants.COLOR_SHADOW),
+                       font: str = None,
+                       background: pygame.Color = pygame.Color('white'),
+                       radius: int = 0, left: int = 0, top: int = 0):
+    text = render_multiline_text(strings, size, color, font)
+    shadow = pygame.Surface((text.get_width(), text.get_height()))
+    shadow.fill(background)
+    shadow.blit(text, (left, top))
+    pil = pygame_surface_to_image(shadow)
+    pil = pil.filter(ImageFilter.GaussianBlur(radius=radius))
+    shadow = pil_image_to_surface(pil)
+    return shadow
+
+
 class MainScreenType(pygame.Surface):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -73,14 +96,25 @@ class MainScreenType(pygame.Surface):
         self.back_button_sprite = None
         self.exit_button_sprite = None
         self.new_screen = None
+        self.backup = pygame.Surface(self.get_size())
 
     def init_introduction_design(self):
         color = pygame.Color(main_constants.COLOR_INTRODUCTION_DESIGN)
         self.fill(color)
         self.work_color = color
 
-    def init_game_design(self):
-        color = pygame.Color(main_constants.COLOR_GAME_DESIGN)
+    def init_easy_game_design(self):
+        color = pygame.Color(main_constants.COLOR_EASY_GAME_DESIGN)
+        self.fill(color)
+        self.work_color = color
+
+    def init_medium_game_design(self):
+        color = pygame.Color(main_constants.COLOR_MEDIUM_GAME_DESIGN)
+        self.fill(color)
+        self.work_color = color
+
+    def init_hard_game_design(self):
+        color = pygame.Color(main_constants.COLOR_HARD_GAME_DESIGN)
         self.fill(color)
         self.work_color = color
 
@@ -149,10 +183,16 @@ class MainScreenType(pygame.Surface):
         self.create_exit_button_sprite()
 
     def draw_sprites(self):
+        self.blit(self.backup, (0, 0))
         self.all_sprites.draw(self)
 
     def update_sprites(self, event: pygame.event.Event = None):
         self.all_sprites.update(event)
+
+    def render_all_non_sprites_objects(self, event: pygame.event.Event = None):
+        pass
+        # The method allows you to render objects that are not sprites
+        # These include game classes with their own built-in render method
 
 
 class ButtonTextSpriteType1(pygame.sprite.Sprite):
@@ -223,5 +263,71 @@ class ButtonTextSpriteType1(pygame.sprite.Sprite):
         self.create_pattern()
 
 
-if __name__ == '__main__':
-    pygame.init()
+class ButtonTextSpriteType2(pygame.sprite.Sprite):
+    def __init__(self, *group):
+        super().__init__(*group)
+        self.set_background()
+        self.is_clicked = False
+
+    def set_background(self, color: pygame.Color = pygame.Color('white')):
+        self.background = color
+        value = 100
+        self.changed_background = [color.r, color.g, color.b]
+        for color_index in range(len(self.changed_background)):
+            if self.changed_background[color_index] - value >= 0:
+                self.changed_background[color_index] -= value
+        self.changed_background = pygame.Color(*self.changed_background)
+
+
+    def set_text(self, text: str, font_size: int = 15,
+                 font: str = None, color: pygame.Color = pygame.Color('black'),
+                 size: tuple = (100, 50)):
+        self.size = size
+        self.image = pygame.Surface(size, pygame.SRCALPHA)
+        main_text = render_multiline_text([text], font_size, color, font)
+        self.text_surface = pygame.Surface(size, pygame.SRCALPHA)
+        self.text_surface.blit(main_text,
+                               ((size[0] - main_text.get_width()) // 2,
+                                (size[1] - main_text.get_height()) // 2))
+        shadow = create_text_shadow([text], font_size,
+                                    pygame.Color(main_constants.COLOR_SHADOW),
+                                    font, self.background, 2, top=3)
+        self.shadow = pygame.Surface(size)
+        self.shadow.fill(self.background)
+        self.shadow.blit(shadow,
+                         ((size[0] - shadow.get_width()) // 2,
+                          (size[1] - shadow.get_height()) // 2))
+        self.image.blit(self.text_surface, (0, 0))
+        self.rect = self.image.get_rect()
+
+    def set_coords(self, x: int = 0, y: int = 0):
+        self.rect.x, self.rect.y = x, y
+
+    def set_field_coords(self, row: int, col: int):
+        self.row, self.col = row, col
+
+    def update(self, *args):
+        event = args[0]
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            if event is not None:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.is_clicked:
+                        self.is_clicked = False
+                    else:
+                        self.is_clicked = True
+            if not self.is_clicked:
+                self.image = self.shadow.copy()
+                self.image.blit(self.text_surface, (0, 0))
+                return
+        if self.is_clicked:
+            self.image = self.shadow.copy()
+            self.image.blit(self.text_surface, (0, 0))
+            pygame.draw.rect(self.image, self.changed_background,
+                             (0, 0, *self.size), width=2,
+                             border_radius=10)
+        else:
+
+            self.image = pygame.Surface((self.text_surface.get_width(),
+                                         self.text_surface.get_height()))
+            self.image.fill(pygame.Color(self.background))
+        self.image.blit(self.text_surface, (0, 0))

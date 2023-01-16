@@ -3,9 +3,9 @@
 import pygame
 import main_constants
 import main_objects
-from PIL import Image, ImageFilter, ImageEnhance
 from main_objects import MainScreenType, render_multiline_text
 import screens.start_screen as start_screen
+import screens.colors_game_screen as colors_game
 
 
 class LevelSelectionScreen(MainScreenType):
@@ -27,6 +27,8 @@ class LevelSelectionScreen(MainScreenType):
                                      main_constants.FONT_PATH_INTER_LIGHT)
         self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
                          80))
+        # Creating backup
+        self.backup = self.copy()
         # Creating difficulty buttons
         btn_size = (470, 78)
         # Creating easy difficulty button sprite
@@ -93,6 +95,8 @@ class EasyLevelSelectionScreen(MainScreenType):
                                      main_constants.FONT_PATH_INTER_LIGHT)
         self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
                          50))
+        # Creating backup
+        self.backup = self.copy()
         # Creating game selection buttons
         btn_size = (470, 78)
         # Creating sounds game button sprite
@@ -171,6 +175,8 @@ class MediumLevelSelectionScreen(MainScreenType):
                                      main_constants.FONT_PATH_INTER_LIGHT)
         self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
                          50))
+        # Creating backup
+        self.backup = self.copy()
         # Creating game selection buttons
         btn_size = (470, 78)
         # Creating count game button sprite
@@ -186,7 +192,7 @@ class MediumLevelSelectionScreen(MainScreenType):
         self.colors_game_button_sprite = MenuButtonSprite(self.all_sprites)
         self.colors_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
                                                   pygame.Color('#68397f'))
-        self.colors_game_button_sprite.set_text('Картинки', 50, pygame.Color('white'),
+        self.colors_game_button_sprite.set_text('Цвета', 50, pygame.Color('white'),
                                                 main_constants.FONT_PATH_INTER_EXTRABOLD)
         x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 311
         self.colors_game_button_sprite.rect.x = x
@@ -228,6 +234,10 @@ class MediumLevelSelectionScreen(MainScreenType):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.back_button_sprite.rect.collidepoint(mouse_pos):
                     self.new_screen = LevelSelectionScreen(main_constants.SCREEN_SIZE)
+                elif self.colors_game_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = colors_game.ColorGameScreen(main_constants.SCREEN_SIZE)
+                    self.new_screen.init_design('MEDIUM',
+                                                main_constants.DATA_COLORS_GAME_MEDIUM_DIFF_FIELD_SIZE)
 
 
 class HardLevelSelectionScreen(MainScreenType):
@@ -249,6 +259,8 @@ class HardLevelSelectionScreen(MainScreenType):
                                      main_constants.FONT_PATH_INTER_LIGHT)
         self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
                          50))
+        # Creating backup
+        self.backup = self.copy()
         # Creating game selection buttons
         btn_size = (470, 78)
         # Creating count game button sprite

@@ -46,13 +46,30 @@ TEXT_LEVEL_SELECTION_SCREEN = {'main_text': {'strings': ['Выберите ур�
                                                      'size': 50,
                                                      'color': pygame.Color('white')}}
 
+# Games Windows Text
+TEXT_COLORS_GAME_SCREEN = {'main_text': {'strings': ['Цвета'],
+                                         'size': 96,
+                                         'color': pygame.Color('white')},
+                           'description': {'strings': ['Выбери нужные цвета!'],
+                                           'size': 48,
+                                           'color': pygame.Color('white')},
+                           'button_check_up': {'strings': ['Проверить'],
+                                               'size': 45,
+                                               'color': pygame.Color('white')},
+                           'error_message': {'strings': ['Не были выбраны', 'нужные цвета'],
+                                             'size': 35,
+                                             'color': pygame.Color('#eb0722')}}
+
 # Main Screen Images
 IMAGE_MAIN_SCREEN = {'back_button': path.join('data/icons/turn-back.png'),
                      'exit_button': path.join('data/icons/exit.png')}
 
 # Main Colors
 COLOR_INTRODUCTION_DESIGN = '#E1CC4F'
-COLOR_GAME_DESIGN = '#D0C3DE'
+COLOR_EASY_GAME_DESIGN = '#D0C3DE'
+COLOR_MEDIUM_GAME_DESIGN = '#C3DBDE'
+COLOR_HARD_GAME_DESIGN = '#DADEC3'
+COLOR_SHADOW = '#474747'
 
 # Images
 IMAGE_BEE_1 = path.join('data/images/bee_1.png')
@@ -63,12 +80,16 @@ IMAGE_OUR_TEAM_PHOTO = path.join('data/images/our_team_image.png')
 IMAGE_ARROW_1 = path.join('data/icons/arrow_1.png')
 
 # Games variables
+# Colors Game fixed parameters
+DATA_COLORS_GAME_FONT = FONT_PATH_INTER_REGULAR
+DATA_COLORS_GAME_FONT_SIZE = 48
 # Colors Game Medium Difficulty
 DATA_COLORS_GAME_MEDIUM_DIFF_COLORS = {'Красный': '#DA1135',
                                        'Синий': '#0995E3',
                                        'Жёлтый': '#DECC2A',
                                        'Зелёный': '#29B537'}
 DATA_COLORS_GAME_MEDIUM_DIFF_FIELD_SIZE = (3, 5)
+DATA_COLORS_GAME_MEDIUM_DIFF_CORRECT_VALUES_COUNT = 3
 # Colors Game Hard Difficulty
 DATA_COLORS_GAME_HARD_DIFF = {'Красный': '#DA1135',
                               'Синий': '#0995E3',
