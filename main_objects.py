@@ -61,6 +61,7 @@ def render_multiline_text(strings: list = [], size: int = 25,
             raise SystemExit(message)
     width, height = 0, 0
     for string in strings:
+        print(color)
         text = font.render(string, True, color)
         if text.get_rect().width > width:
             width = text.get_rect().width
@@ -189,10 +190,49 @@ class MainScreenType(pygame.Surface):
     def update_sprites(self, event: pygame.event.Event = None):
         self.all_sprites.update(event)
 
-    def render_all_non_sprites_objects(self, event: pygame.event.Event = None):
-        pass
-        # The method allows you to render objects that are not sprites
-        # These include game classes with their own built-in render method
+
+class GameScreenType(MainScreenType):
+    def create_info_button_sprite(self):
+        self.info_button_sprite = pygame.sprite.Sprite(self.all_sprites)
+        image = load_image(main_constants.IMAGE_MAIN_SCREEN['info_button'])
+        self.info_button_sprite.image = pygame.transform.smoothscale(image,
+                                                                     (60, 60))
+        self.info_button_sprite.rect = image.get_rect()
+        self.info_button_sprite.rect.x = 25
+        self.info_button_sprite.rect.y = 715
+        self.all_sprites.draw(self)
+
+
+class InfoScreenType(GameScreenType):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def init_design(self, difficult: str = 'MEDIUM',
+                    object: pygame.Surface = pygame.Surface(main_constants.SCREEN_SIZE)):
+        self.object = object
+        if difficult == 'MEDIUM':
+            self.init_medium_game_design()
+        elif difficult == 'HARD':
+            self.init_hard_game_design()
+        self.create_back_button_sprite()
+        self.backup = self.copy()
+
+    def set_text(self, args):
+        # Filling text
+        text = render_multiline_text(args['strings'],
+                                     args['size'], args['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
+                         100))
+        self.backup = self.copy()
+
+    def try_to_change_screen(self, event: pygame.event.Event = None):
+        super().try_to_change_screen(event)
+        mouse_pos = pygame.mouse.get_pos()
+        if event is not None:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.back_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = self.object
 
 
 class ButtonTextSpriteType1(pygame.sprite.Sprite):
@@ -284,6 +324,7 @@ class ButtonTextSpriteType2(pygame.sprite.Sprite):
                  size: tuple = (100, 50)):
         self.size = size
         self.image = pygame.Surface(size, pygame.SRCALPHA)
+        self.text_color = color
         main_text = render_multiline_text([text], font_size, color, font)
         self.text_surface = pygame.Surface(size, pygame.SRCALPHA)
         self.text_surface.blit(main_text,
@@ -322,11 +363,10 @@ class ButtonTextSpriteType2(pygame.sprite.Sprite):
         if self.is_clicked:
             self.image = self.shadow.copy()
             self.image.blit(self.text_surface, (0, 0))
-            pygame.draw.rect(self.image, self.changed_background,
+            pygame.draw.rect(self.image, self.text_color,
                              (0, 0, *self.size), width=2,
                              border_radius=10)
         else:
-
             self.image = pygame.Surface((self.text_surface.get_width(),
                                          self.text_surface.get_height()))
             self.image.fill(pygame.Color(self.background))

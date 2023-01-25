@@ -25,6 +25,7 @@ class ColorsGameObject(pygame.sprite.Group):
                 width = test_text.get_width()
             if test_text.get_height() > height:
                 height = test_text.get_height()
+        self.flag = True
         self.size = size
         self.gap = gap
         self.colors = colors_data
@@ -92,6 +93,10 @@ class ColorsGameObject(pygame.sprite.Group):
             if sprite.rect.collidepoint(pygame.mouse.get_pos()):
                 if event is not None:
                     if event.type == pygame.MOUSEBUTTONDOWN:
+                        if self.flag:
+                            self.flag = False
+                            sprite.update(pygame.event.Event(pygame.MOUSEBUTTONDOWN))
+                            break
                         result = self.field[sprite.row][sprite.col]
                         if result[2]:
                             result = (result[0], result[1], False)

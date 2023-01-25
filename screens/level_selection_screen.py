@@ -318,6 +318,10 @@ class HardLevelSelectionScreen(MainScreenType):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.back_button_sprite.rect.collidepoint(mouse_pos):
                     self.new_screen = LevelSelectionScreen(main_constants.SCREEN_SIZE)
+                elif self.colors_game_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = colors_game.ColorGameScreen(main_constants.SCREEN_SIZE)
+                    self.new_screen.init_design('HARD',
+                                                main_constants.DATA_COLORS_GAME_HARD_DIFF_FIELD_SIZE)
 
 
 class MenuButtonSprite(pygame.sprite.Sprite):

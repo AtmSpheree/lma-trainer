@@ -58,11 +58,15 @@ TEXT_COLORS_GAME_SCREEN = {'main_text': {'strings': ['Цвета'],
                                                'color': pygame.Color('white')},
                            'error_message': {'strings': ['Не были выбраны', 'нужные цвета'],
                                              'size': 35,
-                                             'color': pygame.Color('#eb0722')}}
+                                             'color': pygame.Color('#eb0722')},
+                           'info_screen': {'strings': ['Test', 'Test', 'Test'],
+                                           'size': 50,
+                                           'color': pygame.Color('black')}}
 
 # Main Screen Images
 IMAGE_MAIN_SCREEN = {'back_button': path.join('data/icons/turn-back.png'),
-                     'exit_button': path.join('data/icons/exit.png')}
+                     'exit_button': path.join('data/icons/exit.png'),
+                     'info_button': path.join('data/icons/info.png')}
 
 # Main Colors
 COLOR_INTRODUCTION_DESIGN = '#E1CC4F'
@@ -82,7 +86,7 @@ IMAGE_ARROW_1 = path.join('data/icons/arrow_1.png')
 # Games variables
 # Colors Game fixed parameters
 DATA_COLORS_GAME_FONT = FONT_PATH_INTER_REGULAR
-DATA_COLORS_GAME_FONT_SIZE = 48
+DATA_COLORS_GAME_FONT_SIZE = 45
 # Colors Game Medium Difficulty
 DATA_COLORS_GAME_MEDIUM_DIFF_COLORS = {'Красный': '#DA1135',
                                        'Синий': '#0995E3',
@@ -91,11 +95,12 @@ DATA_COLORS_GAME_MEDIUM_DIFF_COLORS = {'Красный': '#DA1135',
 DATA_COLORS_GAME_MEDIUM_DIFF_FIELD_SIZE = (3, 5)
 DATA_COLORS_GAME_MEDIUM_DIFF_CORRECT_VALUES_COUNT = 3
 # Colors Game Hard Difficulty
-DATA_COLORS_GAME_HARD_DIFF = {'Красный': '#DA1135',
-                              'Синий': '#0995E3',
-                              'Жёлтый': '#DECC2A',
-                              'Зелёный': '#29B537',
-                              'Фиолетовый': '##794BDC',
-                              'Белый': '#f0f0f0',
-                              'Оранжевый': '#f80'}
+DATA_COLORS_GAME_HARD_DIFF_COLORS = {'Красный': '#DA1135',
+                                     'Синий': '#0995E3',
+                                     'Жёлтый': '#DECC2A',
+                                     'Зелёный': '#29B537',
+                                     'Фиолетовый': '#794BDC',
+                                     'Белый': '#f0f0f0',
+                                     'Оранжевый': '#ff8903'}
 DATA_COLORS_GAME_HARD_DIFF_FIELD_SIZE = (4, 6)
+DATA_COLORS_GAME_HARD_DIFF_CORRECT_VALUES_COUNT = 6

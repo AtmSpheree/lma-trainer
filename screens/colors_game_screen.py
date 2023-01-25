@@ -3,13 +3,13 @@
 import pygame
 import main_constants
 import main_objects
-from main_objects import (MainScreenType, render_multiline_text,
-                          create_text_shadow)
+from main_objects import (GameScreenType, InfoScreenType,
+                          render_multiline_text, create_text_shadow)
 import screens.level_selection_screen as level_screen
 import games.colors_game as colors_game
 
 
-class ColorGameScreen(MainScreenType):
+class ColorGameScreen(GameScreenType):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -76,8 +76,9 @@ class ColorGameScreen(MainScreenType):
                                   font_size, font, 20, main_constants.SCREEN_SIZE,
                                   top=220, background_color=self.work_color)
         self.colors_game.set_field(correct_values)
-        # Drawing all sprites
         self.create_back_button_sprite()
+        self.create_info_button_sprite()
+        # Drawing all sprites
         self.all_sprites.draw(self)
 
     def update_sprites(self, event: pygame.event.Event = None):
@@ -120,3 +121,7 @@ class ColorGameScreen(MainScreenType):
                         pass
                     else:
                         self.error_message = True
+                elif self.info_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = InfoScreenType(main_constants.SCREEN_SIZE)
+                    self.new_screen.init_design(self.difficult, self)
+                    self.new_screen.set_text(main_constants.TEXT_COLORS_GAME_SCREEN['info_screen'])
