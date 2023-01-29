@@ -13,6 +13,11 @@ FONT_PATH_INTER_REGULAR = path.join('fonts/Inter-Regular.ttf')
 FONT_PATH_INTER_ITALIC = path.join('fonts/Inter-Italic.ttf')
 FONT_PATH_INTER_EXTRABOLD = path.join('fonts/Inter-ExtraBold.ttf')
 
+# Timer Text
+TEXT_TIMER = {'main_text': {'strings': [],
+                            'size': 35,
+                            'color': pygame.Color('black')}}
+
 # Main Screen Text
 TEXT_MAIN_SCREEN = {'back_button': {'strings': ['Вернуться',
                                                 'назад'],
@@ -45,6 +50,9 @@ TEXT_LEVEL_SELECTION_SCREEN = {'main_text': {'strings': ['Выберите ур�
                                                                  'всё сразу!'],
                                                      'size': 50,
                                                      'color': pygame.Color('white')}}
+TEXT_VICTORY_SCREEN = {'info': {'strings': [],
+                                'size': 60,
+                                'color': pygame.Color('black')}}
 
 # Games Windows Text
 TEXT_COLORS_GAME_SCREEN = {'main_text': {'strings': ['Цвета'],
@@ -66,7 +74,8 @@ TEXT_COLORS_GAME_SCREEN = {'main_text': {'strings': ['Цвета'],
 # Main Screen Images
 IMAGE_MAIN_SCREEN = {'back_button': path.join('data/icons/turn-back.png'),
                      'exit_button': path.join('data/icons/exit.png'),
-                     'info_button': path.join('data/icons/info.png')}
+                     'info_button': path.join('data/icons/info.png'),
+                     'timer_icon': path.join('data/icons/timer.png')}
 
 # Main Colors
 COLOR_INTRODUCTION_DESIGN = '#E1CC4F'

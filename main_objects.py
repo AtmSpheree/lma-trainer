@@ -2,6 +2,7 @@
 
 import pygame
 import sys
+import time
 import main_constants
 from PIL import Image, ImageFilter, ImageEnhance, ImageColor
 
@@ -61,7 +62,6 @@ def render_multiline_text(strings: list = [], size: int = 25,
             raise SystemExit(message)
     width, height = 0, 0
     for string in strings:
-        print(color)
         text = font.render(string, True, color)
         if text.get_rect().width > width:
             width = text.get_rect().width
@@ -97,6 +97,7 @@ class MainScreenType(pygame.Surface):
         self.back_button_sprite = None
         self.exit_button_sprite = None
         self.new_screen = None
+        self.timer = None
         self.backup = pygame.Surface(self.get_size())
 
     def init_introduction_design(self):
@@ -163,6 +164,16 @@ class MainScreenType(pygame.Surface):
         self.exit_button_sprite.rect.y = 25
         self.all_sprites.draw(self)
 
+    def create_info_button_sprite(self):
+        self.info_button_sprite = pygame.sprite.Sprite(self.all_sprites)
+        image = load_image(main_constants.IMAGE_MAIN_SCREEN['info_button'])
+        self.info_button_sprite.image = pygame.transform.smoothscale(image,
+                                                                     (60, 60))
+        self.info_button_sprite.rect = image.get_rect()
+        self.info_button_sprite.rect.x = 25
+        self.info_button_sprite.rect.y = 715
+        self.all_sprites.draw(self)
+
     def try_to_change_screen(self, event: pygame.event.Event = None):
         mouse_pos = pygame.mouse.get_pos()
         if self.exit_button_sprite is not None:
@@ -170,6 +181,15 @@ class MainScreenType(pygame.Surface):
                 if event is not None:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         terminate()
+
+    def set_timer(self):
+        self.timer = GameTimer()
+
+    def render_timer(self):
+        if self.timer is None:
+            return
+        timer_surface = self.timer.get_pygame_surface_view()
+        self.blit(timer_surface, (100, 725))
 
     def get_new_screen(self):
         return self.new_screen
@@ -191,31 +211,33 @@ class MainScreenType(pygame.Surface):
         self.all_sprites.update(event)
 
 
-class GameScreenType(MainScreenType):
-    def create_info_button_sprite(self):
-        self.info_button_sprite = pygame.sprite.Sprite(self.all_sprites)
-        image = load_image(main_constants.IMAGE_MAIN_SCREEN['info_button'])
-        self.info_button_sprite.image = pygame.transform.smoothscale(image,
-                                                                     (60, 60))
-        self.info_button_sprite.rect = image.get_rect()
-        self.info_button_sprite.rect.x = 25
-        self.info_button_sprite.rect.y = 715
-        self.all_sprites.draw(self)
-
-
-class InfoScreenType(GameScreenType):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def init_design(self, difficult: str = 'MEDIUM',
+class SecondaryScreenType(MainScreenType):
+    def init_design(self, difficult: str = 'EASY',
                     object: pygame.Surface = pygame.Surface(main_constants.SCREEN_SIZE)):
         self.object = object
-        if difficult == 'MEDIUM':
+        if difficult == 'EASY':
+            self.init_easy_game_design()
+        elif difficult == 'MEDIUM':
             self.init_medium_game_design()
         elif difficult == 'HARD':
             self.init_hard_game_design()
         self.create_back_button_sprite()
         self.backup = self.copy()
+
+    def try_to_change_screen(self, event: pygame.event.Event = None):
+        super().try_to_change_screen(event)
+        mouse_pos = pygame.mouse.get_pos()
+        if event is not None:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.back_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = self.object
+                    if self.new_screen.timer is not None:
+                        self.new_screen.timer.switch_pause()
+
+
+class InfoScreenType(SecondaryScreenType):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def set_text(self, args):
         # Filling text
@@ -226,13 +248,97 @@ class InfoScreenType(GameScreenType):
                          100))
         self.backup = self.copy()
 
-    def try_to_change_screen(self, event: pygame.event.Event = None):
-        super().try_to_change_screen(event)
-        mouse_pos = pygame.mouse.get_pos()
-        if event is not None:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.back_button_sprite.rect.collidepoint(mouse_pos):
-                    self.new_screen = self.object
+
+class VictoryScreenType(SecondaryScreenType):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def init_design(self, difficult: str = 'EASY',
+                    object: pygame.Surface = pygame.Surface(main_constants.SCREEN_SIZE)):
+        super().init_design(difficult, object)
+        # Creating save_result_button
+
+    def set_text(self, args):
+        # Filling constant text
+        text = render_multiline_text(['Результат'], 70, pygame.Color('black'),
+                                     main_constants.FONT_PATH_INTER_REGULAR)
+        self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
+                         50))
+        text = render_multiline_text(['Уровень:'], args['size'], args['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, (100, 200))
+        text = render_multiline_text(['Игра:'], args['size'], args['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, (100, 320))
+        text = render_multiline_text(['Рейтинг:'], args['size'], args['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, (100, 440))
+        text = render_multiline_text(['Время:'], args['size'], args['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, (100, 560))
+        # Filling text from args
+        text = render_multiline_text([args['strings'][0]], args['size'], args['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, (550, 200))
+        text = render_multiline_text([args['strings'][1]], args['size'], args['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, (550, 320))
+        text = render_multiline_text([args['strings'][2]], args['size'], args['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, (550, 440))
+        text = render_multiline_text([args['strings'][3]], args['size'], args['color'],
+                                     main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(text, (550, 560))
+        # Creating backup
+        self.backup = self.copy()
+
+
+class GameTimer:
+    def __init__(self):
+        self.time = time.time()
+        self.pause = False
+        self.back_time = 0
+
+    def get_current_time(self):
+        if self.pause:
+            return round(self.back_time - self.time)
+        return round(time.time() - self.time)
+
+    def switch_pause(self):
+        if self.pause:
+            self.time = time.time() - self.get_current_time()
+            self.pause = False
+        else:
+            self.pause = True
+            self.back_time = time.time()
+
+    def get_string_view(self):
+        time = self.get_current_time()
+        if time < 60:
+            string = f'00:{str(time).rjust(2, "0")}'
+        elif time >= 60 and time < 3600:
+            string = f'{str(time // 60).rjust(2, "0")}:' \
+                     f'{str(time % 60).rjust(2, "0")}'
+        else:
+            string = f'{str(time // 3600).rjust(2, "0")}' \
+                     f'{str(time // 60).rjust(2, "0")}:' \
+                     f'{str(time % 60).rjust(2, "0")}'
+        return string
+
+    def get_pygame_surface_view(self):
+        string = self.get_string_view()
+        indent = 10
+        text_data = main_constants.TEXT_TIMER['main_text']
+        text = render_multiline_text([string], text_data['size'],
+                                     text_data['color'], main_constants.FONT_PATH_INTER_EXTRABOLD)
+        image = load_image(main_constants.IMAGE_MAIN_SCREEN['timer_icon'])
+        image = pygame.transform.smoothscale(image, (text.get_height(), text.get_height()))
+        result = pygame.Surface((text.get_width() + image.get_width() + indent,
+                                 text.get_height()),
+                                pygame.SRCALPHA)
+        result.blit(image, (0, 0))
+        result.blit(text, (image.get_width() + indent, 2))
+        return result
 
 
 class ButtonTextSpriteType1(pygame.sprite.Sprite):
