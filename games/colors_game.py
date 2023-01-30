@@ -2,8 +2,6 @@
 
 import pygame
 
-import main_constants
-import main_objects
 from main_objects import render_multiline_text, ButtonTextSpriteType2
 from random import sample, choice
 

@@ -55,17 +55,21 @@ class ColorGameScreen(MainScreenType):
                            119))
         self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
                          119))
+        # Filling images
+        image = main_objects.load_image(main_constants.IMAGE_FIREFLY_1)
+        self.blit(image, (154, -10))
+        image = main_objects.load_image(main_constants.IMAGE_FIREFLY_2)
+        self.blit(image, (892, 2))
         # Creating check_up_button
         text_data = main_constants.TEXT_COLORS_GAME_SCREEN['button_check_up']
         self.check_up_button_sprite = main_objects.ButtonTextSpriteType1(self.all_sprites)
         self.check_up_button_sprite.set_velocity(40, 5)
         self.check_up_button_sprite.set_background(self.work_color)
         self.check_up_button_sprite.set_text(text_data['strings'],
-                                                  text_data['size'], text_data['color'],
-                                                  main_constants.FONT_PATH_INTER_LIGHT)
+                                             text_data['size'], text_data['color'],
+                                             main_constants.FONT_PATH_INTER_LIGHT)
         self.check_up_button_sprite.set_underline(2, text_data['color'], 4)
         width = self.check_up_button_sprite.rect.width
-        height = self.check_up_button_sprite.rect.height
         self.check_up_button_sprite.rect.x = (main_constants.SCREEN_WIDTH - width) // 2
         self.check_up_button_sprite.rect.y = 720
         # Creating backup
@@ -79,6 +83,7 @@ class ColorGameScreen(MainScreenType):
                                   font_size, font, 20, main_constants.SCREEN_SIZE,
                                   top=220, background_color=self.work_color)
         self.colors_game.set_field(correct_values)
+        # Creating buttons
         self.create_back_button_sprite()
         self.create_info_button_sprite()
         # Drawing all sprites

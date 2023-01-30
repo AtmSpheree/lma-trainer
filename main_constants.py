@@ -70,6 +70,18 @@ TEXT_COLORS_GAME_SCREEN = {'main_text': {'strings': ['Цвета'],
                            'info_screen': {'strings': ['Test', 'Test', 'Test'],
                                            'size': 50,
                                            'color': pygame.Color('black')}}
+TEXT_ORDER_GAME_SCREEN = {'main_text': {'strings': ['Порядок'],
+                                        'size': 96,
+                                        'color': pygame.Color('white')},
+                          'description': {'strings': ['Выбери числа по порядку!'],
+                                          'size': 48,
+                                          'color': pygame.Color('white')},
+                          'button_check_up': {'strings': ['Проверить'],
+                                              'size': 45,
+                                              'color': pygame.Color('white')},
+                          'info_screen': {'strings': ['Test', 'Test', 'Test'],
+                                          'size': 50,
+                                          'color': pygame.Color('black')}}
 
 # Main Screen Images
 IMAGE_MAIN_SCREEN = {'back_button': path.join('data/icons/turn-back.png'),
@@ -89,6 +101,10 @@ IMAGE_BEE_1 = path.join('data/images/bee_1.png')
 IMAGE_BEE_2 = path.join('data/images/bee_2.png')
 IMAGE_BEE_3 = path.join('data/images/bee_3.png')
 IMAGE_BEE_4 = path.join('data/images/bee_4.png')
+IMAGE_FIREFLY_1 = path.join('data/images/firefly_1.png')
+IMAGE_FIREFLY_2 = path.join('data/images/firefly_2.png')
+IMAGE_BUTTERFLY_1 = path.join('data/images/butterfly_1.png')
+IMAGE_BUTTERFLY_2 = path.join('data/images/butterfly_2.png')
 IMAGE_OUR_TEAM_PHOTO = path.join('data/images/our_team_image.png')
 IMAGE_ARROW_1 = path.join('data/icons/arrow_1.png')
 
@@ -113,3 +129,13 @@ DATA_COLORS_GAME_HARD_DIFF_COLORS = {'Красный': '#DA1135',
                                      'Оранжевый': '#ff8903'}
 DATA_COLORS_GAME_HARD_DIFF_FIELD_SIZE = (4, 6)
 DATA_COLORS_GAME_HARD_DIFF_CORRECT_VALUES_COUNT = 6
+
+# Order Game fixed parameters
+DATA_ORDER_GAME_FONT = FONT_PATH_INTER_REGULAR
+DATA_ORDER_GAME_FONT_SIZE = 45
+# Order Game Medium Difficulty
+DATA_ORDER_GAME_EASY_DIFF_FIELD_SIZE = 3
+# Order Game Medium Difficulty
+DATA_ORDER_GAME_MEDIUM_DIFF_FIELD_SIZE = 4
+# Order Game Medium Difficulty
+DATA_ORDER_GAME_HARD_DIFF_FIELD_SIZE = 5

@@ -18,7 +18,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            else:
+            elif event.type in [pygame.MOUSEBUTTONDOWN]:
                 saved_event = event
         changing_screen.try_to_change_screen(saved_event)
         if changing_screen.get_new_screen() is not None:

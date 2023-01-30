@@ -477,3 +477,52 @@ class ButtonTextSpriteType2(pygame.sprite.Sprite):
                                          self.text_surface.get_height()))
             self.image.fill(pygame.Color(self.background))
         self.image.blit(self.text_surface, (0, 0))
+
+
+class ButtonTextSpriteType3(pygame.sprite.Sprite):
+    def __init__(self, *group):
+        super().__init__(*group)
+        self.set_background()
+        self.visible = True
+        self.border_color = pygame.Color('black')
+        self.border_size = 0
+
+    def set_border(self, color: pygame.Color = pygame.Color('black'), size: int = 1):
+        self.border_color = color
+        self.border_size = size
+
+    def set_background(self, color: pygame.Color = pygame.Color('white')):
+        self.background = color
+
+    def set_text(self, text: str, font_size: int = 15,
+                 font: str = None, color: pygame.Color = pygame.Color('black'),
+                 size: tuple = (100, 100)):
+        self.size = size
+        self.image = pygame.Surface(size, pygame.SRCALPHA)
+        self.image.fill(self.background)
+        self.text_color = color
+        text = render_multiline_text([text], font_size, color, font)
+        self.image.blit(text, ((size[0] - text.get_width()) // 2,
+                               (size[1] - text.get_height()) // 2))
+        self.rect = self.image.get_rect()
+        pygame.draw.rect(self.image, self.border_color,
+                         (0, 0, self.rect.width, self.rect.height), self.border_size)
+
+    def set_coords(self, x: int = 0, y: int = 0):
+        self.rect.x, self.rect.y = x, y
+
+    def set_field_coords(self, row: int, col: int):
+        self.row, self.col = row, col
+
+    def switch_visibility(self):
+        if self.visible == True:
+            self.visible = False
+            self.image = pygame.Surface(main_constants.SCREEN_SIZE,
+                                        pygame.SRCALPHA)
+
+    def update(self, *args):
+        event = args[0]
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            if event is not None:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pass
