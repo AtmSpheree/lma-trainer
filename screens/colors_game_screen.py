@@ -57,9 +57,9 @@ class ColorGameScreen(MainScreenType):
                          119))
         # Filling images
         image = main_objects.load_image(main_constants.IMAGE_FIREFLY_1)
-        self.blit(image, (154, -10))
+        self.blit(image, (154, 90))
         image = main_objects.load_image(main_constants.IMAGE_FIREFLY_2)
-        self.blit(image, (892, 2))
+        self.blit(image, (892, 102))
         # Creating check_up_button
         text_data = main_constants.TEXT_COLORS_GAME_SCREEN['button_check_up']
         self.check_up_button_sprite = main_objects.ButtonTextSpriteType1(self.all_sprites)
