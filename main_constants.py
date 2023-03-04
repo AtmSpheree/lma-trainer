@@ -82,6 +82,19 @@ TEXT_ORDER_GAME_SCREEN = {'main_text': {'strings': ['Порядок'],
                           'info_screen': {'strings': ['Test', 'Test', 'Test'],
                                           'size': 50,
                                           'color': pygame.Color('black')}}
+TEXT_CHOICE_SOUND_SCREEN = {'main_text': {'strings': ['Угадай животное, которое',
+                                                      'произносит этот звук!'],
+                                          'size': 48,
+                                          'color': pygame.Color('black')},
+                            'button_check_up': {'strings': ['Проверить'],
+                                                'size': 45,
+                                                'color': pygame.Color('white')},
+                            'error_message': {'strings': ['Выбрано неверное', 'животное'],
+                                              'size': 35,
+                                              'color': pygame.Color('#eb0722')},
+                            'info_screen': {'strings': ['Test', 'Test', 'Test'],
+                                            'size': 50,
+                                            'color': pygame.Color('black')}}
 
 # Main Screen Images
 IMAGE_MAIN_SCREEN = {'back_button': path.join('data/icons/turn-back.png'),
@@ -107,8 +120,11 @@ IMAGE_BUTTERFLY_1 = path.join('data/images/butterfly_1.png')
 IMAGE_BUTTERFLY_2 = path.join('data/images/butterfly_2.png')
 IMAGE_OUR_TEAM_PHOTO = path.join('data/images/our_team_image.png')
 IMAGE_ARROW_1 = path.join('data/icons/arrow_1.png')
+IMAGE_SOUND_IS_NOT_CLICKED = path.join('data/images/sound_image.png')
+IMAGE_SOUND_IS_CLICKED = path.join('data/images/sound_image_clicked.png')
 
 # Games variables
+GAMES_DB_PATH = 'data/games_data/games_db.db'
 # Colors Game fixed parameters
 DATA_COLORS_GAME_FONT = FONT_PATH_INTER_REGULAR
 DATA_COLORS_GAME_FONT_SIZE = 45
@@ -139,3 +155,14 @@ DATA_ORDER_GAME_EASY_DIFF_FIELD_SIZE = 3
 DATA_ORDER_GAME_MEDIUM_DIFF_FIELD_SIZE = 4
 # Order Game Medium Difficulty
 DATA_ORDER_GAME_HARD_DIFF_FIELD_SIZE = 5
+
+# Choice Game fixed parameters
+DATA_CHOICE_GAME_FONT = FONT_PATH_INTER_REGULAR
+DATA_CHOICE_GAME_FONT_SIZE = 45
+
+# Choice Sounds Game Easy Difficulty
+DATA_CHOICE_SOUNDS_GAME_VARIANTS_COUNT = 3
+DATA_CHOICE_SOUNDS_GAME_LEVELS_COUNT = 3
+DATA_CHOICE_SOUNDS_GAME_COLOR_BUTTON = '#D0C3DE'
+DATA_CHOICE_SOUNDS_GAME_COLOR_BUTTON_HOVER = '#A591BA'
+DATA_CHOICE_SOUNDS_GAME_COLOR_BUTTON_CLICKED = '#624B7A'

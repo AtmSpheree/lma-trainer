@@ -8,6 +8,8 @@ from PIL import Image, ImageFilter, ImageEnhance, ImageColor
 
 # Initializing pygame
 pygame.init()
+# Creating end sound pygame event
+END_SOUND_EVENT = pygame.USEREVENT + 1
 
 
 def terminate(error_message: str = None):
@@ -526,3 +528,117 @@ class ButtonTextSpriteType3(pygame.sprite.Sprite):
             if event is not None:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pass
+
+
+class ButtonTextSpriteType4(pygame.sprite.Sprite):
+    def __init__(self, *group):
+        super().__init__(*group)
+        self.set_colors()
+        self.pressure = False
+        self.rect_flag = True
+
+    def set_colors(self, background_color: pygame.Color = pygame.Color('white'),
+                   btn_color: pygame.Color = pygame.Color('grey'),
+                   hover_color: pygame.Color = pygame.Color('grey'),
+                   changed_color: pygame.Color = pygame.Color('grey'),
+                   outline_color: pygame.Color = pygame.Color('white')):
+        self.background = background_color
+        self.btn_color = btn_color
+        self.hover_background = hover_color
+        self.changed_background = changed_color
+        self.outline_color = outline_color
+
+    def set_text(self, text: str, font_size: int = 15,
+                 font: str = None, color: pygame.Color = pygame.Color('black'),
+                 size: tuple = (100, 100), border_size: int = 0, outline_width: int = 5):
+        self.text = text
+        self.font_size = font_size
+        self.font = font
+        self.text_color = color
+        self.size = size
+        self.border_size = border_size
+        self.outline_width = outline_width
+
+    def render_btn(self, background_color: pygame.Color, is_outline: bool = True):
+        self.image = pygame.Surface(self.size, pygame.SRCALPHA)
+        self.image.fill(self.background)
+        if self.rect_flag:
+            self.rect_flag = False
+            self.rect = self.image.get_rect()
+        pygame.draw.rect(self.image, background_color,
+                         (0, 0, self.rect.width, self.rect.height),
+                         border_radius=self.border_size)
+        if is_outline:
+            pygame.draw.rect(self.image, self.outline_color,
+                             (0, 0, self.rect.width, self.rect.height),
+                             self.outline_width, self.border_size)
+        text = render_multiline_text([self.text], self.font_size, self.text_color, self.font)
+        self.image.blit(text, ((self.size[0] - text.get_width()) // 2,
+                               (self.size[1] - text.get_height()) // 2))
+
+    def set_coords(self, x: int = 0, y: int = 0):
+        self.rect.x, self.rect.y = x, y
+
+    def switch_pressure(self):
+        self.pressure = not self.pressure
+
+    def is_pressed(self):
+        return self.pressure
+
+    def update(self, *args):
+        event = args[0]
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            if event is not None:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.switch_pressure()
+                    return
+        if self.pressure == True:
+            self.render_btn(self.changed_background)
+            return
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            if event is None:
+                self.render_btn(self.hover_background)
+        if not self.rect.collidepoint(pygame.mouse.get_pos()):
+            self.render_btn(self.btn_color)
+
+
+class SoundButtonSpriteType(pygame.sprite.Sprite):
+    def __init__(self, *group):
+        super().__init__(*group)
+        self.is_playable = False
+
+    def set_data(self, sound_path: str, first_image_path: str,
+                 second_image_path: str):
+        self.sound_path = sound_path
+        self.first_image = load_image(first_image_path)
+        self.second_image = load_image(second_image_path)
+        self.set_first_img()
+        self.rect = self.image.get_rect()
+
+    def update(self, *args):
+        event = args[0]
+        if event is not None:
+            if self.rect.collidepoint(pygame.mouse.get_pos()):
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.do_sound()
+                    return
+            if event.type == END_SOUND_EVENT:
+                self.is_playable = False
+                self.set_first_img()
+
+    def set_first_img(self):
+        self.image = self.first_image
+
+    def set_second_img(self):
+        self.image = self.second_image
+
+    def do_sound(self):
+        if self.is_playable:
+            pygame.mixer.music.stop()
+            self.set_first_img()
+        else:
+            pygame.mixer.music.set_endevent(END_SOUND_EVENT)
+            pygame.mixer.music.load(self.sound_path)
+            pygame.mixer.music.play(0)
+            self.set_second_img()
+        self.is_playable = not self.is_playable

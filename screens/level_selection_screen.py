@@ -7,6 +7,7 @@ from main_objects import MainScreenType, render_multiline_text
 import screens.start_screen as start_screen
 import screens.colors_game_screen as colors_game
 import screens.order_game_screen as order_game
+import screens.choice_game_screen as choice_game
 
 
 class LevelSelectionScreen(MainScreenType):
@@ -159,6 +160,11 @@ class EasyLevelSelectionScreen(MainScreenType):
                     self.new_screen = order_game.OrderGameScreen(main_constants.SCREEN_SIZE)
                     self.new_screen.init_design('EASY',
                                                 main_constants.DATA_ORDER_GAME_EASY_DIFF_FIELD_SIZE)
+                elif self.sounds_game_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = choice_game.ChoiceSoundsGameScreen(main_constants.SCREEN_SIZE)
+                    self.new_screen.init_design('EASY',
+                                                main_constants.DATA_CHOICE_SOUNDS_GAME_LEVELS_COUNT,
+                                                main_constants.DATA_CHOICE_SOUNDS_GAME_VARIANTS_COUNT)
 
 
 class MediumLevelSelectionScreen(MainScreenType):

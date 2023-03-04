@@ -20,6 +20,8 @@ def main():
                 running = False
             elif event.type in [pygame.MOUSEBUTTONDOWN]:
                 saved_event = event
+            elif event.type == main_objects.END_SOUND_EVENT:
+                saved_event = event
         changing_screen.try_to_change_screen(saved_event)
         if changing_screen.get_new_screen() is not None:
             changing_screen = changing_screen.get_new_screen()
