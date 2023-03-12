@@ -95,6 +95,19 @@ TEXT_CHOICE_SOUND_SCREEN = {'main_text': {'strings': ['Угадай животн
                             'info_screen': {'strings': ['Test', 'Test', 'Test'],
                                             'size': 50,
                                             'color': pygame.Color('black')}}
+TEXT_CHOICE_PICTURES_SCREEN = {'main_text': {'strings': ['Угадай животное, которое',
+                                                         'изображено на картинке!'],
+                                             'size': 48,
+                                             'color': pygame.Color('black')},
+                               'button_check_up': {'strings': ['Проверить'],
+                                                   'size': 45,
+                                                   'color': pygame.Color('white')},
+                               'error_message': {'strings': ['Выбрано неверное', 'животное'],
+                                                 'size': 35,
+                                                 'color': pygame.Color('#eb0722')},
+                               'info_screen': {'strings': ['Test', 'Test', 'Test'],
+                                               'size': 50,
+                                               'color': pygame.Color('black')}}
 
 # Main Screen Images
 IMAGE_MAIN_SCREEN = {'back_button': path.join('data/icons/turn-back.png'),
@@ -166,3 +179,10 @@ DATA_CHOICE_SOUNDS_GAME_LEVELS_COUNT = 3
 DATA_CHOICE_SOUNDS_GAME_COLOR_BUTTON = '#D0C3DE'
 DATA_CHOICE_SOUNDS_GAME_COLOR_BUTTON_HOVER = '#A591BA'
 DATA_CHOICE_SOUNDS_GAME_COLOR_BUTTON_CLICKED = '#624B7A'
+
+# Choice Pictures Game Easy Difficulty
+DATA_CHOICE_PICTURES_GAME_VARIANTS_COUNT = 3
+DATA_CHOICE_PICTURES_GAME_LEVELS_COUNT = 3
+DATA_CHOICE_PICTURES_GAME_COLOR_BUTTON = '#D0C3DE'
+DATA_CHOICE_PICTURES_GAME_COLOR_BUTTON_HOVER = '#A591BA'
+DATA_CHOICE_PICTURES_GAME_COLOR_BUTTON_CLICKED = '#624B7A'

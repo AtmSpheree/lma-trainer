@@ -165,6 +165,11 @@ class EasyLevelSelectionScreen(MainScreenType):
                     self.new_screen.init_design('EASY',
                                                 main_constants.DATA_CHOICE_SOUNDS_GAME_LEVELS_COUNT,
                                                 main_constants.DATA_CHOICE_SOUNDS_GAME_VARIANTS_COUNT)
+                elif self.pictures_game_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = choice_game.ChoicePicturesGameScreen(main_constants.SCREEN_SIZE)
+                    self.new_screen.init_design('EASY',
+                                                main_constants.DATA_CHOICE_SOUNDS_GAME_LEVELS_COUNT,
+                                                main_constants.DATA_CHOICE_SOUNDS_GAME_VARIANTS_COUNT)
 
 
 class MediumLevelSelectionScreen(MainScreenType):

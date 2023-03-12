@@ -343,6 +343,15 @@ class GameTimer:
         return result
 
 
+class ImageSprite(pygame.sprite.Sprite):
+    def __init__(self, *group):
+        super().__init__(*group)
+
+    def set_image(self, path):
+        self.image = load_image(path)
+        self.rect = self.image.get_rect()
+
+
 class ButtonTextSpriteType1(pygame.sprite.Sprite):
     def __init__(self, *group):
         super().__init__(*group)
