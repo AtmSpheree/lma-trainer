@@ -277,12 +277,9 @@ class VictoryScreenType(SecondaryScreenType):
         text = render_multiline_text(['Игра:'], args['size'], args['color'],
                                      main_constants.FONT_PATH_INTER_LIGHT)
         self.blit(text, (100, 320))
-        text = render_multiline_text(['Рейтинг:'], args['size'], args['color'],
-                                     main_constants.FONT_PATH_INTER_LIGHT)
-        self.blit(text, (100, 440))
         text = render_multiline_text(['Время:'], args['size'], args['color'],
                                      main_constants.FONT_PATH_INTER_LIGHT)
-        self.blit(text, (100, 560))
+        self.blit(text, (100, 440))
         # Filling text from args
         text = render_multiline_text([args['strings'][0]], args['size'], args['color'],
                                      main_constants.FONT_PATH_INTER_LIGHT)
@@ -295,7 +292,7 @@ class VictoryScreenType(SecondaryScreenType):
         self.blit(text, (550, 440))
         text = render_multiline_text([args['strings'][3]], args['size'], args['color'],
                                      main_constants.FONT_PATH_INTER_LIGHT)
-        self.blit(text, (550, 560))
+        self.blit(text, (550, 440))
         # Creating backup
         self.backup = self.copy()
 

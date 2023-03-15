@@ -120,33 +120,15 @@ class EasyLevelSelectionScreen(MainScreenType):
         x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 311
         self.pictures_game_button_sprite.rect.x = x
         self.pictures_game_button_sprite.rect.y = y
-        # Creating cups game button sprite
-        self.cups_game_button_sprite = MenuButtonSprite(self.all_sprites)
-        self.cups_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
-                                                pygame.Color('#68397f'))
-        self.cups_game_button_sprite.set_text('Стаканчики', 50, pygame.Color('white'),
-                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
-        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 401
-        self.cups_game_button_sprite.rect.x = x
-        self.cups_game_button_sprite.rect.y = y
         # Creating order game button sprite
         self.order_game_button_sprite = MenuButtonSprite(self.all_sprites)
         self.order_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
                                                  pygame.Color('#68397f'))
         self.order_game_button_sprite.set_text('Порядок', 50, pygame.Color('white'),
                                                main_constants.FONT_PATH_INTER_EXTRABOLD)
-        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 491
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 401
         self.order_game_button_sprite.rect.x = x
         self.order_game_button_sprite.rect.y = y
-        # Creating all games button sprite
-        self.all_games_button_sprite = MenuButtonSprite(self.all_sprites)
-        self.all_games_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
-                                                pygame.Color('#68397f'))
-        self.all_games_button_sprite.set_text('Всё сразу', 50, pygame.Color('white'),
-                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
-        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 651
-        self.all_games_button_sprite.rect.x = x
-        self.all_games_button_sprite.rect.y = y
         # Drawing all sprites
         self.all_sprites.draw(self)
 
@@ -214,33 +196,15 @@ class MediumLevelSelectionScreen(MainScreenType):
         x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 311
         self.colors_game_button_sprite.rect.x = x
         self.colors_game_button_sprite.rect.y = y
-        # Creating cups game button sprite
-        self.cups_game_button_sprite = MenuButtonSprite(self.all_sprites)
-        self.cups_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
-                                                pygame.Color('#68397f'))
-        self.cups_game_button_sprite.set_text('Стаканчики', 50, pygame.Color('white'),
-                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
-        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 401
-        self.cups_game_button_sprite.rect.x = x
-        self.cups_game_button_sprite.rect.y = y
         # Creating order game button sprite
         self.order_game_button_sprite = MenuButtonSprite(self.all_sprites)
         self.order_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
                                                  pygame.Color('#68397f'))
         self.order_game_button_sprite.set_text('Порядок', 50, pygame.Color('white'),
                                                main_constants.FONT_PATH_INTER_EXTRABOLD)
-        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 491
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 401
         self.order_game_button_sprite.rect.x = x
         self.order_game_button_sprite.rect.y = y
-        # Creating all games button sprite
-        self.all_games_button_sprite = MenuButtonSprite(self.all_sprites)
-        self.all_games_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
-                                                pygame.Color('#68397f'))
-        self.all_games_button_sprite.set_text('Всё сразу', 50, pygame.Color('white'),
-                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
-        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 651
-        self.all_games_button_sprite.rect.x = x
-        self.all_games_button_sprite.rect.y = y
         # Drawing all sprites
         self.all_sprites.draw(self)
 
@@ -306,33 +270,15 @@ class HardLevelSelectionScreen(MainScreenType):
         x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 311
         self.colors_game_button_sprite.rect.x = x
         self.colors_game_button_sprite.rect.y = y
-        # Creating cups game button sprite
-        self.cups_game_button_sprite = MenuButtonSprite(self.all_sprites)
-        self.cups_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
-                                                pygame.Color('#68397f'))
-        self.cups_game_button_sprite.set_text('Стаканчики', 50, pygame.Color('white'),
-                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
-        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 401
-        self.cups_game_button_sprite.rect.x = x
-        self.cups_game_button_sprite.rect.y = y
         # Creating order game button sprite
         self.order_game_button_sprite = MenuButtonSprite(self.all_sprites)
         self.order_game_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
                                                  pygame.Color('#68397f'))
         self.order_game_button_sprite.set_text('Порядок', 50, pygame.Color('white'),
                                                main_constants.FONT_PATH_INTER_EXTRABOLD)
-        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 491
+        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 401
         self.order_game_button_sprite.rect.x = x
         self.order_game_button_sprite.rect.y = y
-        # Creating all games button sprite
-        self.all_games_button_sprite = MenuButtonSprite(self.all_sprites)
-        self.all_games_button_sprite.set_button(btn_size, pygame.Color('#C18EDA'),
-                                                pygame.Color('#68397f'))
-        self.all_games_button_sprite.set_text('Всё сразу', 50, pygame.Color('white'),
-                                              main_constants.FONT_PATH_INTER_EXTRABOLD)
-        x, y = (main_constants.SCREEN_WIDTH - btn_size[0]) // 2, 651
-        self.all_games_button_sprite.rect.x = x
-        self.all_games_button_sprite.rect.y = y
         # Drawing all sprites
         self.all_sprites.draw(self)
 

@@ -34,17 +34,6 @@ class StartScreen(MainScreenType):
         # Creating backup
         self.backup = self.copy()
         # Creating buttons
-        # Creating about_us_button
-        text_data = main_constants.TEXT_START_SCREEN['button_about_us']
-        self.about_us_button_sprite = main_objects.ButtonTextSpriteType1(self.all_sprites)
-        self.about_us_button_sprite.set_velocity(40, 5)
-        self.about_us_button_sprite.set_background(self.work_color)
-        self.about_us_button_sprite.set_text(text_data['strings'],
-                                             text_data['size'], text_data['color'],
-                                             main_constants.FONT_PATH_INTER_LIGHT)
-        self.about_us_button_sprite.set_underline(2, text_data['color'], 4)
-        self.about_us_button_sprite.rect.x = 776
-        self.about_us_button_sprite.rect.y = 20
         # Creating about_program_button
         text_data = main_constants.TEXT_START_SCREEN['button_about_program']
         self.about_program_button_sprite = main_objects.ButtonTextSpriteType1(self.all_sprites)
@@ -54,8 +43,8 @@ class StartScreen(MainScreenType):
                                              text_data['size'], text_data['color'],
                                              main_constants.FONT_PATH_INTER_LIGHT)
         self.about_program_button_sprite.set_underline(2, text_data['color'], 4)
-        self.about_program_button_sprite.rect.x = 818
-        self.about_program_button_sprite.rect.y = 80
+        self.about_program_button_sprite.rect.x = 898
+        self.about_program_button_sprite.rect.y = 20
         # Creating Play Button
         self.play_button_sprite = PlayButtonSprite(self.all_sprites)
         self.play_button_sprite.set_button((348, 348),
@@ -73,9 +62,7 @@ class StartScreen(MainScreenType):
         mouse_pos = pygame.mouse.get_pos()
         if event is not None:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.about_us_button_sprite.rect.collidepoint(mouse_pos):
-                    self.new_screen = about_us_screen.AboutUsScreen(main_constants.SCREEN_SIZE)
-                elif self.about_program_button_sprite.rect.collidepoint(mouse_pos):
+                if self.about_program_button_sprite.rect.collidepoint(mouse_pos):
                     self.new_screen = about_program_screen.AboutProgramScreen(main_constants.SCREEN_SIZE)
                 elif self.play_button_sprite.is_active():
                     self.new_screen = levels_screen.LevelSelectionScreen(main_constants.SCREEN_SIZE)
