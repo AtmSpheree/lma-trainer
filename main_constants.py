@@ -2,6 +2,10 @@
 
 from os import path
 import pygame
+import string
+
+# Constants of Python
+EN_ALPHABET = list(string.ascii_lowercase)
 
 # Main Screen Display Settings
 SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
@@ -108,6 +112,21 @@ TEXT_CHOICE_PICTURES_SCREEN = {'main_text': {'strings': ['Угадай живо�
                                'info_screen': {'strings': ['Test', 'Test', 'Test'],
                                                'size': 50,
                                                'color': pygame.Color('black')}}
+TEXT_COUNT_GAME_SCREEN = {'main_text': {'strings': ['Посчитай'],
+                                        'size': 96,
+                                        'color': pygame.Color('black')},
+                          'description': {'strings': ['Вычисли результат!'],
+                                          'size': 48,
+                                          'color': pygame.Color('black')},
+                          'button_check_up': {'strings': ['Проверить'],
+                                              'size': 45,
+                                              'color': pygame.Color('white')},
+                          'error_message': {'strings': ['Неверный', 'ответ'],
+                                            'size': 35,
+                                            'color': pygame.Color('#eb0722')},
+                          'info_screen': {'strings': ['Test', 'Test', 'Test'],
+                                          'size': 50,
+                                          'color': pygame.Color('black')}}
 
 # Main Screen Images
 IMAGE_MAIN_SCREEN = {'back_button': path.join('data/icons/turn-back.png'),
@@ -162,11 +181,11 @@ DATA_COLORS_GAME_HARD_DIFF_CORRECT_VALUES_COUNT = 6
 # Order Game fixed parameters
 DATA_ORDER_GAME_FONT = FONT_PATH_INTER_REGULAR
 DATA_ORDER_GAME_FONT_SIZE = 45
-# Order Game Medium Difficulty
+# Order Game Easy Difficulty
 DATA_ORDER_GAME_EASY_DIFF_FIELD_SIZE = 3
 # Order Game Medium Difficulty
 DATA_ORDER_GAME_MEDIUM_DIFF_FIELD_SIZE = 4
-# Order Game Medium Difficulty
+# Order Game Hard Difficulty
 DATA_ORDER_GAME_HARD_DIFF_FIELD_SIZE = 5
 
 # Choice Game fixed parameters
@@ -186,3 +205,12 @@ DATA_CHOICE_PICTURES_GAME_LEVELS_COUNT = 3
 DATA_CHOICE_PICTURES_GAME_COLOR_BUTTON = '#D0C3DE'
 DATA_CHOICE_PICTURES_GAME_COLOR_BUTTON_HOVER = '#A591BA'
 DATA_CHOICE_PICTURES_GAME_COLOR_BUTTON_CLICKED = '#624B7A'
+
+# Count Game fixed parameters
+DATA_COUNT_GAME_FONT = FONT_PATH_INTER_REGULAR
+DATA_COUNT_GAME_FONT_SIZE = 45
+DATA_COUNT_GAME_TEXT_COLOR = pygame.Color('black')
+# Count Game Medium Difficulty
+DATA_COUNT_GAME_MEDIUM_DIFF_NUMS_RANGE = (5, 15)
+# Count Game Hard Difficulty
+DATA_COUNT_GAME_HARD_DIFF_NUMS_RANGE = (20, 30)

@@ -18,7 +18,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type in [pygame.MOUSEBUTTONDOWN]:
+            elif event.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN]:
                 saved_event = event
             elif event.type == main_objects.END_SOUND_EVENT:
                 saved_event = event

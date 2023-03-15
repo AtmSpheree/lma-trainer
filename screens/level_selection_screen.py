@@ -8,6 +8,7 @@ import screens.start_screen as start_screen
 import screens.colors_game_screen as colors_game
 import screens.order_game_screen as order_game
 import screens.choice_game_screen as choice_game
+import screens.count_game_screen as count_game
 
 
 class LevelSelectionScreen(MainScreenType):
@@ -258,6 +259,10 @@ class MediumLevelSelectionScreen(MainScreenType):
                     self.new_screen = order_game.OrderGameScreen(main_constants.SCREEN_SIZE)
                     self.new_screen.init_design('MEDIUM',
                                                 main_constants.DATA_ORDER_GAME_MEDIUM_DIFF_FIELD_SIZE)
+                elif self.count_game_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = count_game.CountGameScreen(main_constants.SCREEN_SIZE)
+                    self.new_screen.init_design('MEDIUM',
+                                                main_constants.DATA_COUNT_GAME_MEDIUM_DIFF_NUMS_RANGE)
 
 
 class HardLevelSelectionScreen(MainScreenType):
@@ -346,6 +351,10 @@ class HardLevelSelectionScreen(MainScreenType):
                     self.new_screen = order_game.OrderGameScreen(main_constants.SCREEN_SIZE)
                     self.new_screen.init_design('HARD',
                                                 main_constants.DATA_ORDER_GAME_HARD_DIFF_FIELD_SIZE)
+                elif self.count_game_button_sprite.rect.collidepoint(mouse_pos):
+                    self.new_screen = count_game.CountGameScreen(main_constants.SCREEN_SIZE)
+                    self.new_screen.init_design('HARD',
+                                                main_constants.DATA_COUNT_GAME_HARD_DIFF_NUMS_RANGE)
 
 
 class MenuButtonSprite(pygame.sprite.Sprite):

@@ -351,6 +351,10 @@ class ImageSprite(pygame.sprite.Sprite):
         self.image = load_image(path)
         self.rect = self.image.get_rect()
 
+    def set_pygame_surface(self, surface):
+        self.image = surface
+        self.rect = self.image.get_rect()
+
 
 class ButtonTextSpriteType1(pygame.sprite.Sprite):
     def __init__(self, *group):
@@ -651,3 +655,97 @@ class SoundButtonSpriteType(pygame.sprite.Sprite):
             pygame.mixer.music.play(0)
             self.set_second_img()
         self.is_playable = not self.is_playable
+
+
+class TextInputSprite(pygame.sprite.Sprite):
+    def __init__(self, *group):
+        super().__init__(*group)
+        self.condition = None
+        self.text = []
+        self.set_text_length()
+        self.set_null_time()
+        self.set_data()
+        self.set_line_data()
+        self.rect = pygame.Rect(0, 0, 0, 0)
+
+    def set_text_length(self, length: int = None):
+        self.text_length = length
+
+    def set_line_data(self, width: int = 5, color: pygame.Color = pygame.Color('black'),
+                      time: float = 1, line_height: int = None):
+        self.line_width = width
+        self.line_color = color
+        self.line_time = time
+        if line_height is not None:
+            self.line_height = line_height
+
+    def set_data(self, font: str = None, font_size: int = 15,
+                 color: pygame.Color = pygame.Color('black')):
+        self.font = font
+        self.font_size = font_size
+        self.color = color
+        text = render_multiline_text(['A'], font_size, color, font)
+        self.line_height = text.get_height()
+
+    def set_condition(self, condition: str):
+        if condition is not None and (condition != 'isdigit' and condition != 'isalpha'):
+            raise ValueError('condition must be "isdigit" or "isalpha"')
+        self.condition = condition
+
+    def set_null_time(self):
+        self.time = time.time()
+
+    def update(self, *args):
+        super().update(*args)
+        event = args[0]
+        if event is not None:
+            if event.type == pygame.KEYDOWN:
+                if self.condition == 'isalpha':
+                    data = {eval(f'pygame.K_{letter}'): letter
+                            for letter in main_constants.EN_ALPHABET}
+                elif self.condition == 'isdigit':
+                    data = {eval(f'pygame.K_{num}'): str(num) for num in range(0, 10)}
+                else:
+                    data = {eval(f'pygame.K_{letter}'): letter
+                            for letter in main_constants.EN_ALPHABET}
+                    for num in range(0, 10):
+                        data[eval(f'pygame.K_{num}')] = str(num)
+                if self.condition is not None:
+                    if event.key in data:
+                        if len(self.text) != self.text_length:
+                            self.set_null_time()
+                            self.text.append(data[event.key])
+                if event.key == pygame.K_BACKSPACE:
+                    if self.text:
+                        self.set_null_time()
+                        del self.text[-1]
+        if time.time() - self.time < self.line_time:
+            self.render(line=True)
+        elif (time.time() - self.time >= self.line_time and
+              time.time() - self.time < self.line_time * 2):
+            self.render(line=False)
+        elif time.time() - self.time >= self.line_time * 2:
+            self.set_null_time()
+
+    def render(self, line: bool):
+        text = render_multiline_text([''.join(self.text)], self.font_size,
+                                     self.color, self.font)
+        height = max([text.get_height(), self.line_height])
+        result = pygame.Surface((text.get_width() + self.line_width,
+                                 height), pygame.SRCALPHA)
+        result.blit(text, (0, 0))
+        if line:
+            line = pygame.Surface((self.line_width, self.line_height))
+            pygame.draw.rect(line, self.line_color, (0, 0, self.line_width, self.line_height),
+                             border_radius=10)
+            result.blit(line, (text.get_width(), 0))
+        self.image = result
+        x, y = self.rect.x, self.rect.y
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = x, y
+
+    def set_coords(self, coords: tuple):
+        self.rect.x, self.rect.y = coords
+
+    def get_text(self):
+        return ''.join(self.text)
