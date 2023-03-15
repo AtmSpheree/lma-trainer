@@ -243,11 +243,16 @@ class InfoScreenType(SecondaryScreenType):
 
     def set_text(self, args):
         # Filling text
-        text = render_multiline_text(args['strings'],
-                                     args['size'], args['color'],
-                                     main_constants.FONT_PATH_INTER_LIGHT)
-        self.blit(text, ((main_constants.SCREEN_WIDTH - text.get_width()) // 2,
-                         100))
+        description_text = render_multiline_text(args['strings'],
+                                                 args['size'], args['color'],
+                                                 main_constants.FONT_PATH_INTER_LIGHT)
+        main_text = render_multiline_text(['Пояснениe'],
+                                          96, pygame.Color('black'),
+                                          main_constants.FONT_PATH_INTER_LIGHT)
+        self.blit(main_text, ((main_constants.SCREEN_WIDTH - main_text.get_width()) // 2,
+                              50))
+        self.blit(description_text, ((main_constants.SCREEN_WIDTH - description_text.get_width()) // 2,
+                                     200))
         self.backup = self.copy()
 
 
