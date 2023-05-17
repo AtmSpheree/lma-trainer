@@ -14,3 +14,5 @@ pip install -r requirements.txt
 
 ### figma
 https://www.figma.com/file/0kI1v93NziieQMNI8aprKF/lma-trainer?node-id=0%3A1&t=JkArlE3aihgZ2OAB-0
+### youtube video
+https://youtu.be/yQgRakwXmpY
